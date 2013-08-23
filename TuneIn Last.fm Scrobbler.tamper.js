@@ -70,7 +70,7 @@ David James, madipta, noname, sankai, class_exists, Jalal Berrami, ger,
 Itsacon (http://www.itsacon.net/), Scott Cariss, nobbler, Arno, Denny
 Wardhana, ReverseSyntax, Mateusz "loonquawl" Zalega, Slawomir Kaniecki,
 Francois, Fox, mktime, Douglas Crockford (http://javascript.crockford.com),
-john (http://www.jd-tech.net), Oskar Larsson HÃÂÃÂ¶gfeldt
+john (http://www.jd-tech.net), Oskar Larsson HÃ¶gfeldt
 (http://oskar-lh.name/), marc andreu, Nick Kolosov (http://sammy.ru), date,
 Marc Jansen, Steve Clay, Olivier Louvignes (http://mg-crea.com/), Soren
 Hansen, merabi, Subhasis Deb, josh, T0bsn, Tim Wiel, Brad Touesnard, MeEtc
@@ -105,7 +105,7 @@ dptr1988, Le Torbi, James (http://www.james-bell.co.uk/), Pedro Tainha
 (http://www.pedrotainha.com), James, penutbutterjelly, Arnout Kazemier
 (http://www.3rd-Eden.com), 3D-GRAF, daniel airton wermann
 (http://wermann.com.br), jakes, Yannoo, FGFEmperor, gabriel paderni, Atli
-ÃÂÃÂÃÂÃÂ³r, Maximusya, Diogo Resende, Rival, Howard Yeend, Allan Jensen
+ÃÃ³r, Maximusya, Diogo Resende, Rival, Howard Yeend, Allan Jensen
 (http://www.winternet.no), davook, Benjamin Lupton, baris ozdil, Greg
 Frazier, Manish, Matt Bradley, Cord, fearphage
 (http://http/my.opera.com/fearphage/), Matteo, Victor, taith, Tim de
@@ -487,7 +487,7 @@ function lastfm(loveBtnParent, lastfmBtnParent, SAAHandler) {
 		else if (pelapsedInSec > 122) {
 			var frac = pelapsedInSec / 240; }
 		var start = t - pelapsedInSec;
-		   console.log("here with ndata odata"+ndat[0]+""+odat[0]);
+		
 		if (auth === true && this.mdk === false) {
             console.log("here with ndata"+ndat[0]);
 			if (typeof ndat[0] == "undefined") {
@@ -515,7 +515,7 @@ function lastfm(loveBtnParent, lastfmBtnParent, SAAHandler) {
 					checkRunning("scrobble", start); }
 				lPElapsed = pelapsedInSec; }
                //New condn
-                else if ((totaltsec === false || totaltsec > 30) && (frac >= 0.5 || pelapsedInSec == false ) && ndat[0] != odat[0] && typeof ndat[0] != "undefined") {
+                else if ( ndat[0] != odat[0] && typeof ndat[0] != "undefined") {
 				var scrobbledat = "";
 				console.log("cond 3");
 				if (failedScrobs.length > 0) {
@@ -571,6 +571,7 @@ function lastfm(loveBtnParent, lastfmBtnParent, SAAHandler) {
 					lovebtn.nodeValue = loved ? "Unlove Song" : "Love Song"; }
 				lPElapsed = pelapsedInSec;
 				document.title = ndat[0] + " by " + ndat[1] + titleAppend;
+				
 				setTimeout(saa, 2000); } }
 		else {
             console.log("cond 8");
@@ -958,7 +959,7 @@ gaana.prototype.setupDataGrabber = function() {
 		
 		// Hackish way to set title every 50 ms to force the title to stay as the one set by this script.
 		var forceTitle = function() {
-			if ((document.title.indexOf(song.textContent + " by " + artist.textContent) != -1 )) {
+			if (keep != document.title && (document.title.indexOf(song.textContent + " by " + artist.textContent) != -1 )) {
 					keep = document.title; }
 			else {
 				document.title = keep; } };
@@ -967,29 +968,23 @@ gaana.prototype.setupDataGrabber = function() {
 			
 		var munch = function() {
 			// Stick data in the <span>s
-		  var tempdata=document.getElementsByClassName("line1")[0].innerHTML;
-            if( tempdata.indexOf("div class")!=-1){
-                tempdata.getElementsByClassName("fl-l")[0].innerHTML;
+		  var tempdata;
+          tempdata=document.getElementsByClassName("line1")[0].innerHTML;
+            if(tempdata.length==0){
+          tempdata=document.getElementsByClassName("line1 clearfix")[0].innerHTML;
+         
             }
-		  console.log("ok here");
-		if (document.getElementsByClassName("action playing").length!=0 && tempdata.indexOf("loading")==-1 && tempdata.indexOf("connecting")==-1){
+            console.log("ok here");
+		if (document.getElementsByClassName("action playing").length!=0 && tempdata!="loading" && tempdata!="connecting" ){
 		var n=tempdata.split("-");
-           console.log("inside split"+n[0]+""+n[1]);
-           if(n[n.length-1]!=undefined && n.length>1){
-          song.textContent=n[0];
-           artist.textContent = n[1];
-          console.log("assigned details"+song.textContent+""+artist.textContent+n.length);
-          if(n.length>2){      
-          for (var i=1; i < n.length-2; i++){
-          song.textContent=song.textContent.concat(n[i]);   
-          console.log("concat details"+i+song.textContent);
-          }
-    	//album.textContent =document.getElementsByClassName("albumNamePl")[0].innerHTML;
-	   	artist.textContent = n[n.length-1];
-         console.log("aah details"+song.textContent+""+artist.textContent);
-          }
-          }
+            //console.log(n[1].length);
+                  console.log("inside split"+n[0]+""+n[1]);
+            if(n[1].length!=0){
+            song.textContent = n[0];
+				//album.textContent =document.getElementsByClassName("albumNamePl")[0].innerHTML;
+				artist.textContent = n[1]; 
             }
+        }
 			else {
 				song.textContent = "";
 				album.textContent = "";
@@ -1015,6 +1010,7 @@ gaana.prototype.lastFmRunner = function(self) {
 		var totaltsec = false;
 		var pelapsedInSec =false;
 	        {
+                console.log("calling func"+self.song.textContent+""+self.artist.textContent)
 			self.lfm.invoke([self.song.textContent, self.artist.textContent, self.album.textContent],
 				totaltsec, pelapsedInSec); } }; };
 			
