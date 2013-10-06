@@ -975,7 +975,7 @@ gaana.prototype.setupDataGrabber = function() {
          
             }*/
             console.log("ok here");
-		if (document.getElementsByClassName("playing").length!=0 && tempdata!="loading" && tempdata!="connecting" ){
+		if (document.getElementsByClassName("playing").length!=0 ){
 		var n=tempdata.split("-");
             //console.log(n[1].length);
                   console.log("inside split"+n[0]+""+n[1]);
